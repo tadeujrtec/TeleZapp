@@ -9,7 +9,7 @@ Antes de escrever aqui, confira a versão em vigor: `git fetch --tags` e
 
 ## Próxima versão (ainda sem número)
 
-(nada ainda)
+Atalhos por categoria (pedido de 28/11): `Registro.categorias` devolve as categorias das funções na ordem do registro, `ModeloConfiguracoes.atalhos_categorias` as expõe à janela, e a tela de Atalhos ganha uma `wx.Choice` "Categoria" com "Todas" e cada categoria. `_atalhos_preencher` filtra `modelo.atalhos_lista` pela categoria escolhida, combinando com a busca; a aba "Todas" mantém o comportamento anterior e o mapa índice → função continua 1:1 para Alterar/Remover/Restaurar. Testes em `test_atalhos.py`, `test_configuracoes.py` e `test_configuracoes_atalhos.py`.
 
 ## 2026.11.28.0
 

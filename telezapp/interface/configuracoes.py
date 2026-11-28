@@ -296,6 +296,13 @@ class DialogoConfiguracoes(wx.Dialog):
                 wx.LEFT | wx.RIGHT | wx.TOP, 8)
         self.busca_atalhos = wx.TextCtrl(p, name="Buscar função ou atalho")
         lay.Add(self.busca_atalhos, 0, wx.EXPAND | wx.ALL, 8)
+        lay.Add(wx.StaticText(p, label="Categoria:"), 0,
+                wx.LEFT | wx.RIGHT, 8)
+        self.cx_atalho_categoria = wx.Choice(p, name="Categoria")
+        self.cx_atalho_categoria.Set(
+            ["Todas"] + self.modelo.atalhos_categorias())
+        self.cx_atalho_categoria.SetSelection(0)
+        lay.Add(self.cx_atalho_categoria, 0, wx.EXPAND | wx.ALL, 8)
         lay.Add(wx.StaticText(p, label="Funções (Enter altera o atalho):"),
                 0, wx.LEFT | wx.RIGHT, 8)
         self.lista_atalhos = wx.ListBox(p, name="Funções", size=(-1, 230))
@@ -312,6 +319,8 @@ class DialogoConfiguracoes(wx.Dialog):
         self._atalhos_itens = []
         self.busca_atalhos.Bind(wx.EVT_TEXT,
                                 lambda e: self._atalhos_preencher())
+        self.cx_atalho_categoria.Bind(
+            wx.EVT_CHOICE, lambda e: self._atalhos_preencher())
         self.lista_atalhos.Bind(wx.EVT_LISTBOX_DCLICK,
                                 lambda e: self._atalhos_alterar())
         self.lista_atalhos.Bind(wx.EVT_KEY_DOWN, self._atalhos_tecla)
@@ -329,13 +338,24 @@ class DialogoConfiguracoes(wx.Dialog):
         return "%s, %s: %s" % (acao.rotulo, acao.categoria,
                                nucleo_atalhos.exibir(canon) or "sem atalho")
 
+    def _atalhos_categoria(self):
+        """A categoria escolhida na caixa; vazio quer dizer todas."""
+        caixa = getattr(self, "cx_atalho_categoria", None)
+        if caixa is None or caixa.GetSelection() <= 0:
+            return ""
+        return caixa.GetString(caixa.GetSelection())
+
     def _atalhos_preencher(self, manter=None):
-        """Mostra as funcoes que casam com a busca; `manter` e a chave da
-        funcao que continua selecionada."""
+        """Mostra as funcoes da categoria escolhida que casam com a busca;
+        `manter` e a chave da funcao que continua selecionada."""
         if manter is None:
             manter = self._atalhos_chave()
         self._atalhos_itens = self.modelo.atalhos_lista(
             self.busca_atalhos.GetValue())
+        categoria = self._atalhos_categoria()
+        if categoria:
+            self._atalhos_itens = [(a, c) for a, c in self._atalhos_itens
+                                   if a.categoria == categoria]
         itens = [self._atalhos_texto(a, c) for a, c in self._atalhos_itens] \
             or ["Nenhuma função encontrada."]
         self.lista_atalhos.Set(itens)

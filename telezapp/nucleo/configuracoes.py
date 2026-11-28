@@ -465,6 +465,10 @@ class ModeloConfiguracoes:
             return self.registro.buscar(busca, pers)
         return self.registro.todos(pers)
 
+    def atalhos_categorias(self):
+        """Categorias das funcoes, para a caixa de filtro da tela de Atalhos."""
+        return self.registro.categorias() if self.registro is not None else []
+
     def atalho_de(self, chave):
         return self.registro.efetivo(chave, self.atalhos_em_uso())
 

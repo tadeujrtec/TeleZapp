@@ -48,7 +48,7 @@ Ajuda: Guia de uso, Teclas de atalho, Novidades desta versão, Página do projet
 Para sair do programa, há também o botão Sair, logo depois do campo de busca, e Ctrl+Q.
 
 # Mudar os atalhos
-Quase toda função do menu tem uma tecla de atalho, e você pode mudar todas em Configurações, categoria Atalhos. Há uma busca por função ou por tecla e uma lista com a tecla de cada função.
+Quase toda função do menu tem uma tecla de atalho, e você pode mudar todas em Configurações, categoria Atalhos. Há uma busca por função ou por tecla, uma caixa Categoria para mostrar só as funções de Mensagens, Mídias, Chamadas e assim por diante, e uma lista com a tecla de cada função. A caixa vem em Todas, como era antes; ao escolher uma categoria, a busca continua valendo dentro dela.
 
 Enter na função abre a janela em que você aperta a combinação nova. Se ela já for de outra função, o programa avisa e pergunta se você quer substituir; a outra fica sem atalho.
 

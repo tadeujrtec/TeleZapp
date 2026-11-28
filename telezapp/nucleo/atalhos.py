@@ -162,6 +162,15 @@ class Registro:
         return [(a, self.efetivo(a.chave, personalizados))
                 for a in self.acoes.values()]
 
+    def categorias(self):
+        """Categorias das funcoes registradas, na ordem do registro, sem
+        repetir (para a caixa de filtro da janela de Atalhos)."""
+        vistas = []
+        for acao in self.acoes.values():
+            if acao.categoria not in vistas:
+                vistas.append(acao.categoria)
+        return vistas
+
     def dono(self, canon, ignorar=None, personalizados=None):
         """A Acao que ja usa a combinacao, ou None."""
         if not canon:

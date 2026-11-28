@@ -241,6 +241,13 @@ def test_atalhos_lista_filtra_pela_busca(mod):
     assert [a.chave for a, _ in mod.atalhos_lista("")] == ["a", "b"]
 
 
+def test_atalhos_categorias_sem_registro_e_na_ordem(mod):
+    assert mod.atalhos_categorias() == []
+    mod.registro = _registro()
+    mod.registro.registrar("g", "&Gama", "Geral")
+    assert mod.atalhos_categorias() == ["Mensagens", "Geral"]
+
+
 def test_interface_e_mensagens_reunem_as_categorias_antigas(mod):
     cats = categorias()
     assert "Avisos" not in cats and "Leitura" not in cats
