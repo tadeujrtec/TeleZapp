@@ -1019,6 +1019,10 @@ class Janela(wx.Frame):
         item(m_mid, "vel_escolher", "&Escolher a velocidade do áudio...")
         item(m_mid, "vel_passo",
              "Quanto a velocidade muda a cada &vez...")
+        item(m_mid, "volume_mais",
+             "Aumentar o volume das mensagens de voz em 5%")
+        item(m_mid, "volume_menos",
+             "Diminuir o volume das mensagens de voz em 5%")
         item(m_mid, "midias_limite",
              "&Tamanho máximo do download automático...")
         item(m_mid, "midias_confirmar",
@@ -1296,6 +1300,8 @@ class Janela(wx.Frame):
             "vel_normal": lambda e: self._aplicar_velocidade(1.0),
             "vel_escolher": lambda e: self._escolher_velocidade(),
             "vel_passo": lambda e: self._escolher_passo(),
+            "volume_mais": lambda e: self._mudar_volume(+5),
+            "volume_menos": lambda e: self._mudar_volume(-5),
             "midias_limite": lambda e: self._escolher_opcao(
                 "midias_limite_auto_mb"),
             "midias_confirmar": lambda e: self._escolher_opcao(
@@ -12748,6 +12754,7 @@ class Janela(wx.Frame):
         except FormatoNaoSuportado:
             return False
         motor.velocidade = self._velocidade()
+        motor.volume = self._volume() / 100.0
         motor.tocar()
         self.audio = (x.chave, motor)
         self._marcar_ouvida(x)
@@ -12948,6 +12955,21 @@ class Janela(wx.Frame):
     def _mudar_velocidade(self, direcao):
         self._aplicar_velocidade(vel.proxima(
             self._velocidade(), self._passo_velocidade(), direcao))
+
+    def _volume(self):
+        """0 e um volume valido (mudo), entao nao usar `or 100` aqui."""
+        valor = self.cfg.get("volume_reproducao")
+        return 100 if valor is None else int(valor)
+
+    def _mudar_volume(self, delta):
+        """Muda o volume de 5 em 5%, entre 0 e 100. Vale para o audio que ja
+        toca e fica guardado para as proximas mensagens e players."""
+        novo = max(0, min(100, self._volume() + delta))
+        self.cfg.set("volume_reproducao", novo)
+        if self.audio is not None:
+            self.audio[1].volume = novo / 100.0
+        texto = "Volume %d%%" % novo
+        wx.CallLater(150, lambda: self.fala.falar(texto, interromper=True))
 
     def _escolher_velocidade(self):
         valores = vel.valores(self._passo_velocidade())

@@ -1133,8 +1133,9 @@ OPCOES = (
     Opcao("volume_reproducao", "Volume da reprodução, em porcentagem",
           "Mídias", 100,
           "Volume do controle que abre com o foco em vídeos e áudios "
-          "tocados com janela (setas para cima e para baixo mudam). "
-          "Guardado de uma vez para a próxima.",
+          "tocados com janela (setas para cima e para baixo mudam) e das "
+          "mensagens de voz tocadas sem janela. Muda de 5 em 5% pelos atalhos "
+          "do menu Mídias. Guardado para as próximas reproduções.",
           numero=(0, 100), grupo="Reprodução de áudio"),
     Opcao("falar_pulo_audio",
           "Falar o ponto do áudio ao avançar ou voltar com as teclas",

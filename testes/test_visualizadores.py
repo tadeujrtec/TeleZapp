@@ -36,6 +36,21 @@ def test_texto_pequeno_abre_no_app_e_grande_nao(tmp_path):
         v.DOCUMENTO
 
 
+def test_volume_do_video_volta_depois_de_carregar_o_arquivo():
+    volumes = []
+
+    class CtrlFalso:
+        def SetVolume(self, valor):
+            volumes.append(valor)
+
+    mo = v._MotorMediaCtrl(CtrlFalso())
+    mo.volume = 0.3
+    assert mo.volume == 0.3 and volumes == [0.3]
+    # O MediaCtrl do Windows volta a 100% ao carregar: a janela reaplica.
+    mo._aplicar_volume()
+    assert volumes == [0.3, 0.3]
+
+
 def test_descricao_e_nome_para_salvar():
     x = m.Mensagem("c", "v", "1", autor="Ana", tipo=m.DOCUMENTO,
                    nome_arquivo="relatório.pdf", tamanho=2048, data=1.0)

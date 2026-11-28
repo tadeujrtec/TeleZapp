@@ -1971,6 +1971,51 @@ def test_velocidade_vale_para_o_audio_que_esta_tocando(j):
     assert motor.velocidade == 0.75
 
 
+def test_volume_da_voz_muda_de_5_em_5_e_fica_guardado(j, monkeypatch):
+    monkeypatch.setattr(jm.wx, "CallLater", lambda ms, f, *a: f(*a),
+                        raising=False)
+    ditas = []
+    j.fala.falar = lambda t, interromper=False: ditas.append(t)
+
+    class Motor:
+        volume = 1.0
+
+    motor = Motor()
+    j.audio = (("t1", "10", "9"), motor)
+    j.cfg.set("volume_reproducao", 30)
+    j._mudar_volume(+5)
+    assert j.cfg.get("volume_reproducao") == 35
+    assert motor.volume == 0.35 and ditas[-1] == "Volume 35%"
+    j._mudar_volume(-5)
+    assert j.cfg.get("volume_reproducao") == 30 and motor.volume == 0.3
+    j.cfg.set("volume_reproducao", 0)
+    j._mudar_volume(-5)
+    assert j.cfg.get("volume_reproducao") == 0 and ditas[-1] == "Volume 0%"
+    j.cfg.set("volume_reproducao", 100)
+    j._mudar_volume(+5)
+    assert j.cfg.get("volume_reproducao") == 100 and motor.volume == 1.0
+
+
+def test_voz_nova_toca_com_o_volume_guardado(jm_midia, monkeypatch):
+    MotorFalso.criados = []
+    monkeypatch.setattr(jm, "Reprodutor", MotorFalso)
+    monkeypatch.setattr(jm.wx, "CallLater", lambda *a, **k: None,
+                        raising=False)
+    j = jm_midia
+    j.cfg.set("volume_reproducao", 30)
+    j.b.publicar(ev.MensagensCarregadas("t1", "10", [voz("5")]))
+    j.midias.prontas[("t1", "10", "5")] = "/p/5.ogg"
+    selecionar(j, "5")
+    j._char_hook(Tecla(wx_falso.WXK_RETURN))
+    assert MotorFalso.criados[0].volume == 0.3
+
+
+def test_atalhos_de_volume_nao_tem_tecla_padrao(j):
+    for chave in ("volume_mais", "volume_menos"):
+        assert chave in j.itens
+        assert j.atalhos.efetivo(chave) == ""
+
+
 def test_trocar_o_passo_leva_a_velocidade_ao_valor_permitido(j, monkeypatch):
     j.cfg.set("audio_velocidade", 1.75)
 

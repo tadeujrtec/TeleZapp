@@ -285,6 +285,11 @@ class _MotorMediaCtrl:
     @volume.setter
     def volume(self, valor):
         self._volume = float(valor)
+        self._aplicar_volume()
+
+    def _aplicar_volume(self):
+        """O MediaCtrl volta ao volume máximo quando carrega um arquivo; poe
+        de novo o volume que a pessoa escolheu."""
         try:
             self.ctrl.SetVolume(self._volume)
         except Exception:
@@ -485,12 +490,14 @@ def _reproducao(pai, msg, caminho, texto, fala, motor, video, cfg=None):
                     "menu Mensagem, se quiser abri-lo em outro "
                     "programa.", NOME, wx.OK | wx.ICON_WARNING, dlg)
                 dlg.EndModal(wx.ID_CANCEL)
+            mo._aplicar_volume()      # o Load do Windows zera o volume
             return
         comecar()
 
     if ctrl is not None:
 
         def carregou(evt):
+            mo._aplicar_volume()
             comecar()
 
         def acabou(evt):
