@@ -9,7 +9,7 @@ Antes de escrever aqui, confira a versão em vigor: `git fetch --tags` e
 
 ## Próxima versão (ainda sem número)
 
-(nada ainda)
+Volume do player de vídeo e das mensagens de voz (relato de 28/11): `visualizadores._MotorMediaCtrl._aplicar_volume` reaplica o volume escolhido depois de `MediaCtrl.Load`, porque o controle do Windows volta a 100% ao carregar o arquivo; o aviso `EVT_MEDIA_LOADED` também reaplica. Em Mídias, dois itens novos sem tecla de fábrica, "Aumentar o volume das mensagens de voz em 5%" (`volume_mais`) e "Diminuir..." (`volume_menos`), chamam `janela._mudar_volume`: mudam `volume_reproducao` de 5 em 5% (0 a 100), valem para o áudio que já toca e ficam para as próximas reproduções. `janela._volume` trata 0 como volume válido (mudo), e `_tocar_sem_janela` passa o volume guardado ao `Reprodutor`. Testes em `test_visualizadores.py` e `test_janela.py`.
 
 ## 2026.11.28.0
 

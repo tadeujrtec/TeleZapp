@@ -497,6 +497,14 @@ Escolher a velocidade do áudio: abre uma lista.
 
 No player em janela, os botões Mais rápido e Mais lento e as teclas + e - fazem o mesmo.
 
+# Volume do áudio
+O volume das mensagens de voz muda de 5 em 5% e fica guardado para as próximas. Em Mídias:
+Aumentar o volume das mensagens de voz em 5%.
+Diminuir o volume das mensagens de voz em 5%.
+Esses dois não vêm com tecla: escolha as suas em Configurações, Atalhos, categoria Mídias. O leitor fala o volume, por exemplo "Volume 35%".
+
+No player com janela, a barra Volume faz o mesmo; as setas para cima e para baixo a ajustam quando ela tem o foco. O volume escolhido vale também da próxima vez que você abre um vídeo ou áudio.
+
 Para voltar e avançar no áudio que toca ao fundo:
 Ctrl+Shift+Seta para a esquerda e para a direita: 5 segundos.
 Ctrl+Shift+Page Up e Page Down: 30 segundos.
